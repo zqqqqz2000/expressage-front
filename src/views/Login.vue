@@ -26,14 +26,11 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <div class="test">
-      <div>asdfsdfsd</div>
-    </div>
   </div>
 </template>
 
 <script>
-import config from "../config";
+import { api } from "../utils";
 
 export default {
   name: "Login",
@@ -41,21 +38,17 @@ export default {
     return {
       loginForm: { username: "", password: "" },
       loginFunc() {
-        this.axios({
-          url: config.serverURL + "/management/login",
-          method: "post",
-          data: this.loginForm,
-        }).then((response) => {
-          if (!response.data.success) {
-            this.$message({
-              type: "error",
-              message: response.data.info,
-            });
-          } else {
-            localStorage.setItem("token", response.data.token);
-            this.$router.push("/");
-          }
-        });
+        api.bind(this)(
+          "/management/login",
+          this.loginForm,
+          (response) => {
+            if (response.data.success) {
+              localStorage.setItem("token", response.data.token);
+              this.$router.push("/index");
+            }
+          },
+          false
+        );
       },
     };
   },
@@ -79,12 +72,5 @@ export default {
 .login-pad {
   width: 300px;
   background: rgba(255, 255, 255, 0.5);
-}
-.test {
-  height: 1em;
-  overflow-y: hidden;
-}
-.test > div {
-  margin-top: 1em;
 }
 </style>

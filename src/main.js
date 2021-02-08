@@ -12,7 +12,7 @@ Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 
-new Vue({
+export let vue = new Vue({
   router,
   render: h => h(App)
 }).$mount('#app')

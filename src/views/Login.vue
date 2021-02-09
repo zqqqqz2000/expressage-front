@@ -44,7 +44,7 @@ export default {
           (response) => {
             if (response.data.success) {
               localStorage.setItem("token", response.data.token);
-              this.$router.push("/index");
+              this.$router.push("/index/warehouse");
             }
           },
           false

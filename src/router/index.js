@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Index from '../views/Index.vue'
+import Warehouse from '../components/Warehouse.vue'
 
 Vue.use(VueRouter)
 
@@ -14,7 +15,14 @@ const routes = [
   {
     path: '/index',
     name: 'Index',
-    component: Index
+    component: Index,
+    children: [
+      {
+        path: 'warehouse',
+        name: 'warehouse',
+        component: Warehouse,
+      }
+    ]
   }
 ]
 

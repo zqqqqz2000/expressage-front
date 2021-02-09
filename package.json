@@ -16,6 +16,7 @@
     "url-loader": "^4.1.1",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.4",
+    "vue-baidu-map": "^0.21.22",
     "vue-router": "^3.5.1"
   },
   "devDependencies": {

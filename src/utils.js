@@ -11,11 +11,15 @@ export function api(url, data, callback, withToken = true) {
         this.$router.push("/login");
         return;
     }
+    if (withToken) {
+        data.token = localStorage.getItem('token');
+    }
     this.axios({
         url: config.serverURL + url,
         method: "post",
         data: data,
     }).then((response) => {
+        // response = clone(response);
         if ('info' in response.data) {
             this.$message({
                 type: response.data.success ? "success" : "error",
@@ -24,4 +28,8 @@ export function api(url, data, callback, withToken = true) {
         }
         callback(response);
     });
+}
+
+export function clone(obj) {
+    return JSON.parse(JSON.stringify(obj));
 }

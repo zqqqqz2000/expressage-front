@@ -12,35 +12,43 @@
         ></el-button>
       </div>
       <el-table class="table" :data="warehouseData">
-        <el-table-column fixed prop="id" label="编号" width="50">
+        <el-table-column prop="id" label="编号" width="50"> </el-table-column>
+        <el-table-column label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button
+              type="text"
+              size="small"
+              @click="
+                api(
+                  '/management/remove_warehouse',
+                  { id: scope.row.id },
+                  deleteWarehouseCallback
+                )
+              "
+              >删除</el-button
+            >
+          </template>
         </el-table-column>
-        <el-table-column fixed prop="name" label="仓库名称" width="250">
+        <el-table-column prop="name" label="仓库名称" width="250">
         </el-table-column>
-        <el-table-column fixed prop="lng" label="经度" width="150">
-        </el-table-column>
-        <el-table-column fixed prop="lat" label="维度" width="150">
-        </el-table-column>
-        <el-table-column fixed prop="location" label="定位地址" width="300">
+        <el-table-column prop="lng" label="经度" width="150"> </el-table-column>
+        <el-table-column prop="lat" label="维度" width="150"> </el-table-column>
+        <el-table-column prop="location" label="定位地址" width="300">
         </el-table-column>
         <el-table-column
-          fixed
           prop="specific_location"
           label="详细地址"
           width="350"
         ></el-table-column>
-        <el-table-column label="操作" width="100">
-          <template slot-scope="scope">
-            <el-button type="text" size="small">删除{{ scope.id }}</el-button>
-          </template>
-        </el-table-column>
       </el-table>
       <div class="pagination">
         <el-pagination
-          v-model="warehouseCurrentPage"
+          :current-page="warehouseCurrentPage"
           background
           layout="prev, pager, next"
-          :total="warehouseTotalPage"
+          :page-count="warehouseTotalPage"
           class="pagination"
+          @current-change="handleCurrentChange"
         />
       </div>
     </el-card>
@@ -114,7 +122,7 @@
 </template>
 
 <script>
-import { api } from "../utils";
+import { api } from "@/utils";
 
 export default {
   name: "Warehouse",
@@ -153,6 +161,10 @@ export default {
   },
   methods: {
     api,
+    handleCurrentChange(val) {
+      this.warehouseCurrentPage = val;
+      this.getPagedWarehouse(val);
+    },
     closeMap() {
       setTimeout(() => (this.showMapVar = false), 300);
     },
@@ -186,19 +198,35 @@ export default {
         });
       }, 500);
     },
+    deleteWarehouseCallback() {
+      this.getPagedWarehouse(this.warehouseCurrentPage);
+    },
     addWarehouseCallback() {
       this.getPagedWarehouse(this.warehouseCurrentPage);
+      this.addWarehouseVisible = false;
+      this.warehouseAddForm = {
+        location: "",
+        name: "",
+        specific_location: "",
+        lng: null,
+        lat: null,
+      };
     },
     getPagedWarehouse(page) {
       api.bind(this)(
         "/management/get_warehouses",
         {
           page,
-          per_page: 200,
+          per_page: 10,
         },
         (response) => {
           this.warehouseData = response.data.columns;
           this.warehouseTotalPage = response.data.total_page;
+          if (this.warehouseTotalPage < this.warehouseCurrentPage) {
+            this.warehouseCurrentPage -= 1;
+            this.getPagedWarehouse(this.warehouseCurrentPage);
+          }
+          console.log(this.warehouseTotalPage);
         }
       );
     },
@@ -227,5 +255,9 @@ export default {
 
 .table {
   height: calc(100vh - 200px);
+}
+
+.el-table--scrollable-x .el-table__body-wrapper {
+  z-index: 2;
 }
 </style>

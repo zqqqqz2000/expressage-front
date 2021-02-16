@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Index from '../views/Index.vue'
+import Inventory from '../components/Inventory.vue'
 import Warehouse from '../components/Warehouse.vue'
 
 Vue.use(VueRouter)
@@ -21,6 +22,11 @@ const routes = [
         path: 'warehouse',
         name: 'warehouse',
         component: Warehouse,
+      },
+      {
+        path: 'inventory',
+        name: 'inventory',
+        component: Inventory,
       }
     ]
   }

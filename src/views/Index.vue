@@ -5,7 +5,7 @@
     </el-header>
     <el-container>
       <el-aside>
-        <el-menu default-active="1" class="menu">
+        <el-menu :default-active="currentActive" class="menu">
           <el-menu-item @click="$router.push('/index/warehouse')" index="1">
             <template slot="title">
               <i class="el-icon-house">
@@ -13,7 +13,7 @@
               </i>
             </template>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item @click="$router.push('/index/inventory')" index="2">
             <template slot="title">
               <i class="el-icon-box">
                 <span>库存管理</span>
@@ -52,8 +52,19 @@
 export default {
   name: "Index",
   data() {
-    return {};
+    return {
+      currentActive: "1"
+    };
   },
+  mounted() {
+    const pathIndex = {
+      '/index/warehouse': 1,
+      '/index/inventory': 2
+    }
+    if (this.$router.currentRoute.fullPath in pathIndex) {
+      this.currentActive = pathIndex[this.$router.currentRoute.fullPath].toString();
+    }
+  }
 };
 </script>
 

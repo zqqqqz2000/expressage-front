@@ -11,7 +11,7 @@
             @click="addInventoryVisible = true"
         ></el-button>
       </div>
-      <el-table class="table" :data="inventoryData">
+      <el-table :data="inventoryData" height="calc(100vh - 200px)">
         <el-table-column prop="id" label="编号" width="50"></el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
@@ -277,10 +277,6 @@ export default {
   background-color: white;
   text-align: right;
   cursor: pointer;
-}
-
-.table {
-  height: calc(100vh - 200px);
 }
 
 .el-table--scrollable-x .el-table__body-wrapper {

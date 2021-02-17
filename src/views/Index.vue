@@ -20,7 +20,7 @@
               </i>
             </template>
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item @click="$router.push('/index/deliveryman')" index="3">
             <template slot="title">
               <i class="el-icon-bicycle">
                 <span>快递员管理</span>
@@ -59,7 +59,8 @@ export default {
   mounted() {
     const pathIndex = {
       '/index/warehouse': 1,
-      '/index/inventory': 2
+      '/index/inventory': 2,
+      '/index/deliveryman': 3,
     }
     if (this.$router.currentRoute.fullPath in pathIndex) {
       this.currentActive = pathIndex[this.$router.currentRoute.fullPath].toString();

@@ -5,6 +5,8 @@ import Index from '../views/Index.vue'
 import Inventory from '../components/Inventory.vue'
 import Warehouse from '../components/Warehouse.vue'
 import Deliveryman from "@/components/Deliveryman";
+import DeliverymanLogin from "@/views/DeliverymanLogin";
+import DeliverymanPage from "@/views/DeliverymanPage";
 
 Vue.use(VueRouter)
 
@@ -13,6 +15,16 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/deliveryman_login',
+    name: 'DeliverymanLogin',
+    component: DeliverymanLogin
+  },
+  {
+    path: '/deliveryman',
+    name: 'Deliveryman',
+    component: DeliverymanPage
   },
   {
     path: '/index',

@@ -93,10 +93,14 @@
     <!--改变货品数量模态框-->
     <el-dialog title="更改库存数量" :visible.sync="changeInventoryVisible">
       <div v-if="inventoryInWarehouse !== null">
+        <!--搜索框-->
+        <el-input placeholder="仓库名" size="mini" style="margin-bottom: 10px" v-model="searchWarehouseName">
+          <el-button slot="append" icon="el-icon-search" size="mini"></el-button>
+        </el-input>
         <baidu-map :center="{lng: 116.404, lat: 39.915}" :zoom="2" style="width: 100%; height: 300px"
                    :scrollWheelZoom="true">
           <bm-marker :key="warehouse.id" :position="{'lng': warehouse.lng, 'lat': warehouse.lat}" :dragging="false"
-                     v-for="warehouse of inventoryInWarehouse"
+                     v-for="warehouse of searchedWarehouses"
                      @click="warehouse.showEdit = true;">
             <bm-info-window
                 :show="warehouse.showEdit"
@@ -152,6 +156,7 @@ export default {
   },
   data() {
     return {
+      searchWarehouseName: '',
       showMapVar: false,
       inventoryData: [],
       inventoryCurrentPage: 0,
@@ -257,6 +262,13 @@ export default {
       )
     }
   },
+  computed: {
+    searchedWarehouses() {
+      return this.inventoryInWarehouse.filter((column) => {
+        return column.name.indexOf(this.searchWarehouseName) !== -1;
+      });
+    }
+  }
 };
 </script>
 

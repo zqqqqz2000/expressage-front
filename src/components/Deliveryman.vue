@@ -85,13 +85,17 @@
                 })
               "
           >新增快递员
-          </el-button
-          >
+          </el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
     <!--显示快递员位置-->
-    <el-dialog title="快递员位置" :visible.sync="showPositionVisible"></el-dialog>
+    <el-dialog title="快递员位置" :visible.sync="showPositionVisible">
+      <baidu-map :center="{'lng': deliverymanLng, 'lat': deliverymanLat}" :zoom="15" style="width: 100%; height: 300px"
+                 :scrollWheelZoom="true">
+        <bm-marker :position="{'lng': deliverymanLng, 'lat': deliverymanLat}" :dragging="false"/>
+      </baidu-map>
+    </el-dialog>
   </div>
 </template>
 
@@ -106,6 +110,8 @@ export default {
   data() {
     return {
       deliverymanData: [],
+      deliverymanLng: null,
+      deliverymanLat: null,
       deliverymanCurrentPage: 0,
       deliverymanTotalPage: 1,
       deliverymanAddForm: {
@@ -134,8 +140,13 @@ export default {
     api,
     showPosition(val) {
       if (val.lng === null) this.$message('快递员 ' + val.name + ' 未上传位置');
-      else
-        this.showPositionVisible = true;
+      else {
+        {
+          this.deliverymanLat = val.lat;
+          this.deliverymanLng = val.lng;
+          this.showPositionVisible = true;
+        }
+      }
     },
     handleCurrentChange(val) {
       this.deliverymanCurrentPage = val;
@@ -157,7 +168,6 @@ export default {
       setTimeout(() => {
         if (!this.deliverymanAddForm.lng || !this.deliverymanAddForm.lat) {
           callback(new Error("请在地图上选择地址"));
-          return;
         } else {
           callback();
         }
